@@ -18,3 +18,9 @@ This challenge is solved with 5 entities
 - Status : status info of the ticket, used only to somwaht identify a ticket for the http server
 - String : returns a string representing the ticket in print format
 
+* Server is a REST HTTP Server that recognices the following methods
+- GET /newticket     Creates a new ticket
+- GET /tickets       List all tickets stored on the server
+- GET /ticket/[0-9]+ Retrieves the ticket asked
+- PUT /ticket/[0-9]+ Used to add lines to a ticket, the body represents a json with the needed parameters
+

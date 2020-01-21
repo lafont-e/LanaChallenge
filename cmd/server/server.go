@@ -8,8 +8,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/elafont/CbreChallenge/hangman"
-	"github.com/elafont/CbreChallenge/server"
+	"github.com/elafont/LanaChallenge/server"
+	"github.com/elafont/LanaChallenge/tickets"
 	"github.com/gorilla/mux"
 )
 
@@ -34,9 +34,9 @@ func main() {
 
 	// Create Server
 	s := &server.Server{
-		Router: mux.NewRouter(),
-		Games:  make([]*hangman.Hangman, 0, 8),
-		Logger: log.New(os.Stdout, "", log.LstdFlags),
+		Router:  mux.NewRouter(),
+		Tickets: make([]*tickets.Ticket, 0, 8),
+		Logger:  log.New(os.Stdout, "", log.LstdFlags),
 	}
 
 	s.RegisterRoutes()
@@ -56,5 +56,6 @@ func signals() {
 func Usage() {
 	fmt.Println("Usage: ", os.Args[0], "[-ip, -help]")
 	fmt.Println("   ie: ", os.Args[0], "-ip *:8081")
+	fmt.Println("This command starts the web server at the specified IP and Port, defaults at localhost:8080")
 	os.Exit(2)
 }
