@@ -26,3 +26,17 @@ This challenge is solved with 5 entities
 
 * cmd/Server is the application that launches the ticket server
 * cmd/Client is the application that connects through REST with the ticket server
+* cmd runs from the bin directory where the needed json files reside, there are copies of those files on tickets and server but mostly to make the tests work
+
+* promotions.json and products.json files should be on a conf directory, but I did not pretend a fully functional app, just a pilot tests
+
+* there is a Makefile to simplify the process
+- make all, will compile and install client & server apps to the bin directory
+- From the bin directory, calling server will wake up the tickets server
+- From the bin directory, calling client will call the ticket server
+
+* Available commands of the client app
+- new , will create a new ticket
+- list, will list all tickets on the ticket server
+- show, will show any asked ticket (use the -t flag, otherwise only ticket 0 will be shown)
+- add,  will add a product to a ticket (use the -t, -p and -q flags)
