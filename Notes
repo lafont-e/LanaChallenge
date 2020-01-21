@@ -1,0 +1,20 @@
+This challenge is solved with 5 entities
+
+- discounts: it is a function that given a ticket and a line from such ticket computes the discount appliable if any.
+- promotions: table of promotions offered on products by the shop.
+- products: Table of products that are sold on the store, only defined as name and price.
+- line: each and every one of the product sold in a ticket, a line defines the product and the quantity.
+- tickets: Collection of lines reflecting the products sold in this ticket.
+
+
+* As we don't have a database where to keep permanent information, we used global variable as an alternative, although global variables (an more in modules) are a bad programming practice, I'm aware of it, but this is a sample application only, so it makes no sense to define a database and use it.
+* in discounts, the discount functions are hard coded BUT with a small change, they can be loaded dinamically at runtime if needed, just did not implement that way as it takes more effort
+* the files promotions.json and products.json must be available at the same directory that the server application.
+
+* Tickets has the followind public functions/methods
+- NewTicket: returns a new ticket with the given promotions table
+- Add: method that adds a line to the ticket
+- Total: total value of the ticket 
+- Status : status info of the ticket, used only to somwaht identify a ticket for the http server
+- String : returns a string representing the ticket in print format
+
