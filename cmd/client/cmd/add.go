@@ -33,7 +33,7 @@ var addCmd = &cobra.Command{
 	Long:  "add a product to a ticket in the server.",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Print("add a product\n\n")
-		addProd()
+		add()
 	},
 }
 
@@ -50,9 +50,9 @@ func init() {
 
 }
 
-func addProd() {
+func add() {
 	// check Code is valid
-	if prodCode != nil {
+	if prodCode == nil {
 		fmt.Println("Error: Can not use empty string as a product code.")
 		return
 	}
@@ -63,32 +63,32 @@ func addProd() {
 		return
 	}
 
-	fmt.Println(tkStatus)
+	fmt.Println(*tkStatus)
 
 }
 
-func addProduct(srv string, tkID int, qty int, pcode *string) (string, error) {
+func addProduct(srv string, tkID int, qty int, pcode *string) (*string, error) {
 	form := url.Values{}
 	form.Set("code", *pcode)
 	form.Set("quantity", strconv.Itoa(qty))
 
 	resp, err := http.PostForm(fmt.Sprintf("http://%s/ticket/%d", srv, tkID), form)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
 
-	var answer server.Response
+	var answer responseTks
 
 	if err := bindJSON(bytes.NewReader(body), &answer); err != nil {
-		return "", fmt.Errorf("error reading response %v", err)
+		return nil, fmt.Errorf("error reading response %v", err)
 	}
 
 	if answer.Status == server.StatusFail {
-		return "", fmt.Errorf("Error: Can not guess, code:%d, %s", answer.Code, answer.Message)
+		return nil, fmt.Errorf("Error: Can not guess, code:%d, %s", answer.Code, answer.Message)
 	}
 
-	return answer.Data.Content.(string), nil
+	return answer.Data.Content, nil
 }

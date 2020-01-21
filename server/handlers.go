@@ -40,16 +40,16 @@ func NewTicket(s *Server) http.HandlerFunc {
 
 func ListTickets(s *Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var tks = make([]*tickets.Ticket, 0, len(s.Tickets))
+		var tks = make([]string, 0, len(s.Tickets))
 
-		for _, t := range s.Tickets {
-			tks = append(tks, t)
+		for ix, t := range s.Tickets {
+			tks = append(tks, fmt.Sprintf("[%d] %s", ix, t.Status()))
 		}
 
 		NewResponse(
 			http.StatusOK,
 			fmt.Sprintf("Ticket List"),
-			&Data{Type: "Tickets", Content: tks}).WriteTo(w)
+			&Data{Type: "Tickets", Content: &tks}).WriteTo(w)
 		return
 	}
 }
@@ -76,7 +76,7 @@ func GetTicket(s *Server) http.HandlerFunc { // This functions reacts to GET, to
 		NewResponse(
 			http.StatusOK,
 			fmt.Sprintf("Ticket ID: %d", id),
-			&Data{Type: "Ticket Status", Content: ticket.Status()}).WriteTo(w)
+			&Data{Type: "Ticket String", Content: ticket.String()}).WriteTo(w)
 		return
 
 	}

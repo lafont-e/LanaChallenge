@@ -47,7 +47,7 @@ func listTicket(srv string) (*[]string, error) {
 	body, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
 
-	var answer responseHsArr
+	var answer responseTksArr
 
 	if err := bindJSON(bytes.NewReader(body), &answer); err != nil {
 		return nil, fmt.Errorf("error reading response %v", err)

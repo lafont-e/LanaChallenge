@@ -32,13 +32,13 @@ func init() {
 }
 
 func show() {
-	hs, err := getTicket(host, *tkid)
+	tks, err := getTicket(host, *tkid)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println(hs)
+	fmt.Println(*tks)
 }
 
 func getTicket(srv string, tkid int) (*string, error) {
@@ -50,7 +50,7 @@ func getTicket(srv string, tkid int) (*string, error) {
 	body, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
 
-	var answer responseHs
+	var answer responseTks
 
 	if err := bindJSON(bytes.NewReader(body), &answer); err != nil {
 		return nil, fmt.Errorf("error reading response %v", err)

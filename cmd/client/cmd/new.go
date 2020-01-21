@@ -32,7 +32,7 @@ func new() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(tkstatus)
+	fmt.Println(*tkstatus)
 }
 
 func newTicket(srv string) (*string, error) {
@@ -44,7 +44,7 @@ func newTicket(srv string) (*string, error) {
 	body, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
 
-	var answer responseHs
+	var answer responseTks
 
 	if err := bindJSON(bytes.NewReader(body), &answer); err != nil {
 		return nil, fmt.Errorf("error reading response %v", err)

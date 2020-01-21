@@ -15,7 +15,7 @@ const DEFAULTHOST = "localhost"
 const DEFAULTWEBPORT = "8080"
 
 // Commodity structs to make simple to unmarshal json responses
-type responseHs struct { // Adapted from server.Response
+type responseTks struct { // Adapted from server.Response
 	Status  string `json:"status"`
 	Code    int    `json:"code"`
 	Message string `json:"message"`
@@ -25,7 +25,7 @@ type responseHs struct { // Adapted from server.Response
 	} `json:"data"`
 }
 
-type responseHsArr struct { // Adapted from server.Response
+type responseTksArr struct { // Adapted from server.Response
 	Status  string `json:"status"`
 	Code    int    `json:"code"`
 	Message string `json:"message"`
