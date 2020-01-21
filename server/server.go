@@ -46,7 +46,7 @@ func (s *Server) RegisterRoutes() {
 	s.Router.HandleFunc("/tickets", logHandler(s, ListTickets(s))).Methods(http.MethodGet)
 	s.Router.HandleFunc("/newticket", logHandler(s, NewTicket(s))).Methods(http.MethodGet)
 	s.Router.HandleFunc("/ticket/{ticket_id:[0-9]+}", logHandler(s, GetTicket(s))).Methods(http.MethodGet)
-	s.Router.HandleFunc("/ticket/{ticket_id:[0-9]+}", logHandler(s, AddProduct(s))).Methods(http.MethodPut)
+	s.Router.HandleFunc("/ticket/{ticket_id:[0-9]+}", logHandler(s, AddProduct(s))).Methods(http.MethodPost)
 }
 
 // Respond write handler for responses

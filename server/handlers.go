@@ -1,7 +1,6 @@
 package server
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -83,7 +82,7 @@ func GetTicket(s *Server) http.HandlerFunc { // This functions reacts to GET, to
 	}
 }
 
-func AddProduct(s *Server) http.HandlerFunc { // This functions reacts to PUT, to add a product to a ticket
+func AddProduct(s *Server) http.HandlerFunc { // This functions reacts to POST, to add a product to a ticket
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := getInt64Param(r, "ticket_id")
 		if err != nil {
@@ -101,14 +100,11 @@ func AddProduct(s *Server) http.HandlerFunc { // This functions reacts to PUT, t
 		}
 
 		ticket := s.Tickets[id]
-		data := make([]byte, 1024)
-		form := make(map[string]string)
-		n, _ := r.Body.Read(data)
-		json.Unmarshal(data[:n], &form)
+		r.ParseForm()
 
-		quantity, ok := form["quantity"]
+		quantity := r.FormValue("quantity")
 		qty, err := strconv.Atoi(quantity)
-		if !ok || err != nil {
+		if err != nil {
 			NewResponse(
 				http.StatusBadRequest,
 				fmt.Sprint("Quantity is not a number", quantity),
@@ -116,9 +112,9 @@ func AddProduct(s *Server) http.HandlerFunc { // This functions reacts to PUT, t
 			return
 		}
 
-		code, ok := form["code"]
+		code := r.FormValue("code")
 		product, err := products.GetProduct(code)
-		if !ok || err != nil {
+		if err != nil {
 			NewResponse(
 				http.StatusBadRequest,
 				fmt.Sprintf("Product: %s unknown", code),

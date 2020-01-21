@@ -19,8 +19,10 @@ This challenge is solved with 5 entities
 - String : returns a string representing the ticket in print format
 
 * Server is a REST HTTP Server that recognices the following methods
-- GET /newticket     Creates a new ticket
-- GET /tickets       List all tickets stored on the server
-- GET /ticket/[0-9]+ Retrieves the ticket asked
-- PUT /ticket/[0-9]+ Used to add lines to a ticket, the body represents a json with the needed parameters
+- GET  /newticket     Creates a new ticket
+- GET  /tickets       List all tickets stored on the server
+- GET  /ticket/[0-9]+ Retrieves the ticket asked
+- POST /ticket/[0-9]+ Used to add lines to a ticket, the body represents a Form with the needed parameters
 
+* cmd/Server is the application that launches the ticket server
+* cmd/Client is the application that connects through REST with the ticket server

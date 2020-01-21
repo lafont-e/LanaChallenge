@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"reflect"
 	"strings"
@@ -141,13 +142,16 @@ func testListTickets(t *testing.T) {
 }
 
 func testAddProduct(t *testing.T) {
-	var req = "{\"code\":\"PEN\",\"quantity\":\"3\"}"
+	form := url.Values{}
+	form.Set("code", "PEN")
+	form.Set("quantity", "3")
 
 	w, r := CreateRequest(
-		http.MethodPut,
+		http.MethodPost,
 		"/ticket/0",
-		strings.NewReader(req),
+		strings.NewReader(form.Encode()),
 	)
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	s.Router.ServeHTTP(w, r)
 	Equals(t, http.StatusOK, w.Code)
