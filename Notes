@@ -7,15 +7,15 @@ This challenge is solved with 5 entities
 - tickets: Collection of lines reflecting the products sold in this ticket.
 
 
-* As we don't have a database where to keep permanent information, we used global variable as an alternative, although global variables (an more in modules) are a bad programming practice, I'm aware of it, but this is a sample application only, so it makes no sense to define a database and use it.
-* in discounts, the discount functions are hard coded BUT with a small change, they can be loaded dinamically at runtime if needed, just did not implement that way as it takes more effort
+* As we don't have a database where to keep permanent information, we used global variables as an alternative, although global variables (an more in modules) are a bad programming practice, I'm aware of it, but this is a sample application only, so it makes no sense to define a database and use it.
+* in discounts, the discount functions are hard coded BUT with a small change, they can be loaded dinamically (golang plugin) at runtime if needed, just did not implement that way as it takes more effort
 * the files promotions.json and products.json must be available at the same directory that the server application.
 
 * Tickets has the followind public functions/methods
 - NewTicket: returns a new ticket with the given promotions table
 - Add: method that adds a line to the ticket
 - Total: total value of the ticket 
-- Status : status info of the ticket, used only to somwaht identify a ticket for the http server
+- Status : status info of the ticket, used only to somewhat identify a ticket for the http server
 - String : returns a string representing the ticket in print format
 
 * Server is a REST HTTP Server that recognices the following methods
@@ -24,13 +24,13 @@ This challenge is solved with 5 entities
 - GET  /ticket/[0-9]+ Retrieves the ticket asked
 - POST /ticket/[0-9]+ Used to add lines to a ticket, the body represents a Form with the needed parameters
 
-* cmd/Server is the application that launches the ticket server
-* cmd/Client is the application that connects through REST with the ticket server
-* cmd runs from the bin directory where the needed json files reside, there are copies of those files on tickets and server but mostly to make the tests work
+* bin/Server is the application that launches the ticket server
+* bin/Client is the application that connects through REST with the ticket server
+* commands runs from the bin directory where the needed json files reside, there are copies of those files on tickets and server but mostly to make the tests work
 
-* promotions.json and products.json files should be on a conf directory, but I did not pretend a fully functional app, just a pilot tests
+* promotions.json and products.json files should be on a conf directory, or named through a conf file, but I did not pretend a fully functional app, just a pilot tests
 
-* there is a Makefile to simplify the process
+* there is a Makefile to simplify the process, it compiles and installs the binaries in the bin directory
 - make all, will compile and install client & server apps to the bin directory
 - From the bin directory, calling server will wake up the tickets server
 - From the bin directory, calling client will call the ticket server
