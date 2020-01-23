@@ -5,9 +5,12 @@ package products
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+
+	"github.com/lafont-e/LanaChallenge/currency"
 )
 
 // productsFile name of the file with the products to manage
@@ -15,9 +18,9 @@ const productsFile = "./products.json"
 
 // Product struct that defines a product
 type Product struct {
-	Code  string  `json:"code"`
-	Name  string  `json:"name"`
-	Price float32 `json:"price"`
+	Code  string            `json:"code"`
+	Name  string            `json:"name"`
+	Price currency.Currency `json:"price"`
 }
 
 var errNotFound = errors.New("Product Not found")
@@ -32,7 +35,7 @@ func init() {
 }
 
 // NewProduct returns a new product
-func NewProduct(code, name string, price float32) *Product {
+func NewProduct(code, name string, price currency.Currency) *Product {
 	return &Product{code, name, price}
 }
 
@@ -55,7 +58,7 @@ func SearchProduct(code string) (p *Product, err error) {
 }
 
 // GetPrice Return the price of a product
-func (p *Product) GetPrice() float32 {
+func (p *Product) GetPrice() currency.Currency {
 	return p.Price
 }
 
@@ -71,6 +74,13 @@ func (p *Product) GetCode() string {
 
 // loadProducts function that reads products from a json file
 func loadProducts() error {
+
+	type jsProduct struct {
+		Code  string  `json:"code"`
+		Name  string  `json:"name"`
+		Price float64 `json:"price"`
+	}
+
 	// read file
 	data, err := ioutil.ReadFile(productsFile)
 	if err != nil {
@@ -80,7 +90,7 @@ func loadProducts() error {
 		return err
 	}
 
-	var ps []Product // as the Json file is stored as an array not a hash, to avoid Code duplication issues
+	var ps []jsProduct // as the Json file is stored as an array not a hash, to avoid Code duplication issues
 
 	// unmarshall it
 	err = json.Unmarshal(data, &ps)
@@ -90,9 +100,16 @@ func loadProducts() error {
 		return err
 	}
 
-	for ix, p := range ps {
-		products[p.Code] = &ps[ix]
+	for _, p := range ps {
+		prod := Product{Code: p.Code, Name: p.Name, Price: currency.NewCurrency(p.Price)}
+		products[p.Code] = &prod
 	}
 
 	return nil
+}
+
+// Returns a String representing the product
+func (p *Product) String() string {
+	// {MUG Lana Cofee Mug 7.50}
+	return fmt.Sprintf("&{%s %s %.02f}", p.Code, p.Name, p.Price)
 }

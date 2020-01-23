@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/lafont-e/LanaChallenge/currency"
 	"github.com/lafont-e/LanaChallenge/products"
 )
 
@@ -30,20 +31,20 @@ func TestTicket(t *testing.T) {
 	}
 	var buyList = []struct {
 		list     string
-		total    float32
+		total    currency.Currency
 		articles []*cline
 	}{
-		{"NoDiscount", 32.50, []*cline{&cline{1, PEN}, &cline{1, TSHIRT}, &cline{1, MUG}}},
-		{"2x1.A", 25.00, []*cline{&cline{1, PEN}, &cline{1, TSHIRT}, &cline{1, PEN}}},
-		{"2x1.B", 25.00, []*cline{&cline{2, PEN}, &cline{1, TSHIRT}}},
-		{"2x1.C", 30.00, []*cline{&cline{2, PEN}, &cline{1, TSHIRT}, &cline{1, PEN}}},
-		{"3plus.A", 52.50, []*cline{&cline{1, TSHIRT}, &cline{1, TSHIRT}, &cline{1, MUG}, &cline{1, TSHIRT}}},
-		{"3plus.B", 52.50, []*cline{&cline{3, TSHIRT}, &cline{1, MUG}}},
-		{"3plus.C", 67.50, []*cline{&cline{3, TSHIRT}, &cline{1, MUG}, &cline{1, TSHIRT}}},
-		{"3plus.D", 67.50, []*cline{&cline{4, TSHIRT}, &cline{1, MUG}}},
-		{"AllDisc.A", 62.50, []*cline{&cline{1, PEN}, &cline{1, TSHIRT}, &cline{1, PEN}, &cline{1, PEN}, &cline{1, MUG}, &cline{1, TSHIRT}, &cline{1, TSHIRT}}},
-		{"AllDisc.B", 62.50, []*cline{&cline{3, PEN}, &cline{3, TSHIRT}, &cline{1, MUG}}},
-		{"AllDisc.C", 77.50, []*cline{&cline{3, PEN}, &cline{4, TSHIRT}, &cline{1, MUG}}},
+		{"NoDiscount", currency.NewCurrency(32.50), []*cline{&cline{1, PEN}, &cline{1, TSHIRT}, &cline{1, MUG}}},
+		{"2x1.A", currency.NewCurrency(25.00), []*cline{&cline{1, PEN}, &cline{1, TSHIRT}, &cline{1, PEN}}},
+		{"2x1.B", currency.NewCurrency(25.00), []*cline{&cline{2, PEN}, &cline{1, TSHIRT}}},
+		{"2x1.C", currency.NewCurrency(30.00), []*cline{&cline{2, PEN}, &cline{1, TSHIRT}, &cline{1, PEN}}},
+		{"3plus.A", currency.NewCurrency(52.50), []*cline{&cline{1, TSHIRT}, &cline{1, TSHIRT}, &cline{1, MUG}, &cline{1, TSHIRT}}},
+		{"3plus.B", currency.NewCurrency(52.50), []*cline{&cline{3, TSHIRT}, &cline{1, MUG}}},
+		{"3plus.C", currency.NewCurrency(67.50), []*cline{&cline{3, TSHIRT}, &cline{1, MUG}, &cline{1, TSHIRT}}},
+		{"3plus.D", currency.NewCurrency(67.50), []*cline{&cline{4, TSHIRT}, &cline{1, MUG}}},
+		{"AllDisc.A", currency.NewCurrency(62.50), []*cline{&cline{1, PEN}, &cline{1, TSHIRT}, &cline{1, PEN}, &cline{1, PEN}, &cline{1, MUG}, &cline{1, TSHIRT}, &cline{1, TSHIRT}}},
+		{"AllDisc.B", currency.NewCurrency(62.50), []*cline{&cline{3, PEN}, &cline{3, TSHIRT}, &cline{1, MUG}}},
+		{"AllDisc.C", currency.NewCurrency(77.50), []*cline{&cline{3, PEN}, &cline{4, TSHIRT}, &cline{1, MUG}}},
 	}
 
 	for _, bl := range buyList {

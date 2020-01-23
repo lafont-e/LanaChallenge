@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/lafont-e/LanaChallenge/currency"
 	"github.com/lafont-e/LanaChallenge/products"
 )
 
@@ -16,7 +17,7 @@ type line struct {
 	quantity int
 	code     string
 	name     string
-	price    float32
+	price    currency.Currency
 }
 
 // Ticket is a set of products sold expressed as lines
@@ -25,8 +26,8 @@ type Ticket struct {
 	lines      []*line               // Lines in the ticket
 	discounts  []*line               // Discounts in the ticket
 	ts         time.Time             // Creation date for the ticket
-	total      float32               // Total for the ticket
-	discTotal  float32               // Total of discounts
+	total      currency.Currency     // Total for the ticket
+	discTotal  currency.Currency     // Total of discounts
 	promotions map[string]*promotion // Promotions to apply to this ticket
 	up2date    bool                  // is the ticket up 2 date ?
 }
@@ -52,7 +53,7 @@ func (t *Ticket) Add(q int, product *products.Product) {
 func (t *Ticket) addLocked(q int, product *products.Product) {
 	if q != 0 { // does not add a line if quantity is zero
 		t.lines = append(t.lines, &line{quantity: q, code: product.Code, name: product.Name, price: product.Price})
-		t.total += float32(q) * product.Price
+		t.total += currency.Currency(q) * product.Price
 		t.up2date = false
 	}
 }
@@ -61,7 +62,7 @@ func (t *Ticket) addLocked(q int, product *products.Product) {
 func (t *Ticket) addDiscountLocked(q int, product *products.Product) {
 	if q != 0 { // does not add a line if quantity is zero
 		t.discounts = append(t.discounts, &line{quantity: q, code: product.Code, name: product.Name, price: product.Price})
-		t.discTotal += float32(q) * product.Price
+		t.discTotal += currency.Currency(q) * product.Price
 	}
 }
 
@@ -72,7 +73,7 @@ func (t *Ticket) clearDiscountsLocked() {
 }
 
 // Total calc the discounts and total price of the ticket
-func (t *Ticket) Total() float32 {
+func (t *Ticket) Total() currency.Currency {
 	if !t.up2date {
 		t.Lock()
 		t.clearDiscountsLocked()
@@ -120,13 +121,13 @@ func (t *Ticket) String() string {
 	t.Lock()
 	for _, line := range t.lines {
 		quantity, price := line.quantity, line.price
-		tks.WriteString(fmt.Sprintf(itemLine, quantity, line.name, price, float32(quantity)*price))
+		tks.WriteString(fmt.Sprintf(itemLine, quantity, line.name, price, currency.Currency(quantity)*price))
 	}
 	if len(t.discounts) > 0 {
 		tks.WriteString(fmt.Sprintln(separator))
 		for _, line := range t.discounts {
 			quantity, price := line.quantity, line.price
-			tks.WriteString(fmt.Sprintf(itemLine, quantity, line.name, price, float32(quantity)*price))
+			tks.WriteString(fmt.Sprintf(itemLine, quantity, line.name, price, currency.Currency(quantity)*price))
 		}
 	}
 	t.Unlock()

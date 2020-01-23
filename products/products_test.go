@@ -18,7 +18,7 @@ func ExampleCheckProducts() {
 		fmt.Println(code, p)
 	}
 	// Unordered output:
-	// MUG &{MUG Lana Cofee Mug 7}
-	// PEN &{PEN Lana Pen 5}
-	// TSHIRT &{TSHIRT Lana T-Shirt 20}
+	// MUG &{MUG Lana Cofee Mug 7.50}
+	// PEN &{PEN Lana Pen 5.00}
+	// TSHIRT &{TSHIRT Lana T-Shirt 20.00}
 }
